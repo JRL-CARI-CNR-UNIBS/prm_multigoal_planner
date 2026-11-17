@@ -176,3 +176,7 @@ Results: 60/60 passed (20 scenarios x 3) in the RoboStack workspaces for Jazzy (
 
 Note: MoveIt uses the URDF `safety_controller` soft limits, so on a UR10e the elbow bounds are
 ±2.99 rad, not ±π.
+
+## License
+
+Apache License 2.0, see [LICENSE](LICENSE).

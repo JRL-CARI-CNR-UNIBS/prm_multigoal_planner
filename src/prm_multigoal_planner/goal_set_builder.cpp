@@ -1,3 +1,6 @@
+// Copyright 2026 CARI-JRL
+// SPDX-License-Identifier: Apache-2.0
+
 #include <prm_multigoal_planner/goal_set_builder.hpp>
 #include <prm_multigoal_planner/joint_order_utils.hpp>
 

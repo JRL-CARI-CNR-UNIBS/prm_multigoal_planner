@@ -1,3 +1,6 @@
+// Copyright 2026 CARI-JRL
+// SPDX-License-Identifier: Apache-2.0
+
 #include <prm_multigoal_planner/prm_multigoal_planner_action_server.hpp>
 
 #include <algorithm>

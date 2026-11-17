@@ -1,3 +1,6 @@
+// Copyright 2026 CARI-JRL
+// SPDX-License-Identifier: Apache-2.0
+
 #include <prm_multigoal_planner/multigoal_lazy_prm_star.hpp>
 
 #include <algorithm>
