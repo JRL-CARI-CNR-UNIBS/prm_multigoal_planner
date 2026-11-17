@@ -1,0 +1,83 @@
+# Scenarios for a plain UR10e (ur_robot_driver mock hardware + ur_moveit_config), group ur_manipulator,
+# frames base_link / tool0. Same structure as parallel_multigoal_planner_test/config/sharework_scenarios.yaml.
+configurations:
+  home: [1.5707, -2.4434, 2.4434, -1.5707, 1.5707, 0.0]
+  a: [1.2, -1.8, 1.9, -1.7, 1.57, 0.0]
+  b: [1.9, -1.45, 1.6, -1.6, 1.57, 0.3]
+  c: [0.8, -2.0, 2.0, -1.5, 1.57, -0.3]
+  far_1: [-1.619, -2.363, 2.239, -1.633, 1.703, 0.379]
+  far_2: [-1.657, -2.039, 2.373, -1.575, 1.584, -0.489]
+  far_3: [-1.787, -2.327, 2.011, -1.044, 1.376, -0.044]
+  in_collision: [0.0, -1.57, 2.9, 0.0, 0.0, 0.0]     # elbow folded, within the soft limits: wrist vs upper arm
+
+obstacles:   # in base_link
+  pillar: {shape: sphere, size: [0.06], position: [-0.10, 0.39, 0.79]}   # tool0 halfway home -> a
+  block_a: {shape: box, size: [0.12, 0.12, 0.12], position: [0.035, 0.572, 0.86]}   # on tool0 in a
+  wall: {shape: box, size: [0.05, 0.6, 0.6], position: [0.30, 0.10, 0.70]}   # across the base swing home -> far_*
+
+scenarios:
+  - name: single_joint_goal
+    goals: [{joint: a}]
+  - name: joint_alternatives
+    goals: [{joint: a}, {joint: b}, {joint: c}]
+  - name: cartesian_alternatives
+    goals: [{pose_of: a}, {pose_of: b}]
+  - name: mixed_goals
+    goals: [{pose_of: a}, {joint: c}]
+  - name: far_joint_alternatives
+    goals: [{joint: far_1}, {joint: far_2}, {joint: far_3}]
+    allowed_planning_time: 10.0
+  - name: tree_growth                   # the wall blocks the straight lines: the roadmap has to be grown
+    obstacles: [wall]
+    goals: [{joint: far_1}, {joint: far_2}, {joint: far_3}]
+    allowed_planning_time: 10.0
+  - name: back_home
+    start: a
+    goals: [{joint: home}]
+  - name: obstacle_detour
+    obstacles: [pillar]
+    goals: [{joint: a}]
+  - name: obstacle_alternatives
+    obstacles: [pillar]
+    goals: [{joint: a}, {joint: b}, {joint: c}]
+  - name: obstacle_on_closest_goal
+    obstacles: [block_a]
+    goals: [{joint: a}, {joint: b}, {joint: c}]
+  - name: obstacle_cartesian
+    obstacles: [pillar]
+    goals: [{pose_of: a}, {pose_of: b}]
+  - name: obstacle_mixed
+    obstacles: [pillar, block_a]
+    goals: [{pose_of: a}, {joint: c}]
+  - name: empty_goals
+    goals: []
+    expect: rejected
+  - name: unknown_group
+    group: no_such_group
+    goals: [{joint: a}]
+    expect: INVALID_GROUP_NAME
+  - name: unreachable_pose
+    goals: [{pose: {position: [5.0, 0.0, 0.0], orientation: [0.0, 0.0, 0.0, 1.0]}}]
+    expect: NO_IK_SOLUTION
+  - name: goal_in_collision
+    goals: [{joint: in_collision}]
+    expect: INVALID_GOAL_CONSTRAINTS
+  - name: goal_in_obstacle
+    obstacles: [block_a]
+    goals: [{joint: a}]
+    expect: INVALID_GOAL_CONSTRAINTS
+  - name: start_in_collision
+    start: in_collision
+    goals: [{joint: a}]
+    expect: START_STATE_IN_COLLISION
+  - name: start_in_obstacle
+    obstacles: [block_a]
+    start: a
+    goals: [{joint: home}]
+    expect: START_STATE_IN_COLLISION
+  - name: cancel
+    obstacles: [wall]
+    goals: [{joint: far_1}, {joint: far_2}, {joint: far_3}]
+    allowed_planning_time: 10.0
+    cancel_after: 0.05
+    expect: canceled

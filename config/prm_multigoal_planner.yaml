@@ -1,0 +1,24 @@
+# Parameters of prm_multigoal_planner (defaults shown).
+/**:
+  ros__parameters:
+    action_name: prm_multigoal_plan          # startup only
+    ik_solver_ns: ik_solver                  # startup only
+    planning_scene_service: /get_planning_scene  # startup only
+    service_timeout_s: 5.0                   # startup only
+
+    # Used when a roadmap is (re)built
+    collision_check_resolution: 0.02         # [rad] max distance between collision checks along an edge
+    scene_joint_tolerance: 0.001             # quantization of non-group joints in the scene hash
+    collision_padding: 0.0                   # [m] extra padding of the group links vs the world (a change rebuilds)
+
+    # Read at every request (can be changed with `ros2 param set`)
+    default_allowed_planning_time: 5.0       # [s] used if motion_plan_request.allowed_planning_time <= 0
+    utopia_tolerance: 0.01                   # stop when cost < (1 + tol) * min_i ||goal_i - start||
+    try_direct_connection: true              # first try straight lines that already satisfy the threshold
+    search_growth_ratio: 0.01                # while optimizing, search again every max(5, ratio * vertices) new samples
+    informed_sampling_ratio: 0.7             # after the first solution, fraction of samples from the informed set
+    simplify_solution: true                  # OMPL PathSimplifier on the returned path (roadmap untouched)
+    simplify_max_time: 0.1                   # [s]
+    max_roadmap_vertices: 100000             # rebuild the roadmap when larger (0 = unlimited)
+    feedback_period_s: 0.2                   # [s] action feedback period while planning
+    waypoint_dt_s: 0.5                       # [s] time_from_start spacing of the output waypoints

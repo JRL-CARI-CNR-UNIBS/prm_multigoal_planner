@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>prm_multigoal_planner</name>
+  <version>0.0.0</version>
+  <description>
+    Action server (parallel_multigoal_planner_msgs/ParallelMultigoalPlan) that plans a motion
+    reaching any one of several alternative Cartesian/joint-space goals with a persistent
+    multi-goal Lazy PRM* (OMPL). The roadmap is reused across requests and rebuilt only when
+    the planning scene (fetched from move_group before every request) changes. Planning stops
+    as soon as cost &lt; (1 + utopia_tolerance) * utopia, utopia = min_i ||goal_i - start||.
+  </description>
+
+  <maintainer email="manuel.beschi@unibs.it">Manuel Beschi</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
+  <depend>moveit_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>parallel_multigoal_planner_msgs</depend>
+  <depend>ik_solver_msgs</depend>
+  <depend>moveit_core</depend>
+  <depend>moveit_ros_planning</depend>
+  <depend>ompl</depend>
+
+  <exec_depend>ik_solver</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

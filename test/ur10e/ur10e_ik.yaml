@@ -1,0 +1,15 @@
+/ur_ik_solver/ik_solver_node:
+  ros__parameters:
+    type: ik_solver/Ur10eIkSolver
+    base_frame: base_link
+    flange_frame: tool0
+    tool_frame: tool0
+    desired_solutions: 32
+    joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+    min_stall_iterations: 100
+    max_stall_iterations: 1000
+    parallel_ik_mode: 2
+    filter_duplicates: true
+    task_redundant:
+      type: grid
+      yaw: {min: -0.5236, max: 0.5236, step: 0.2618}
